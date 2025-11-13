@@ -1,0 +1,8 @@
+participant_id	age	sex	handedness	func_vert_fov	anat_vert_fov	anat_disc_ref	anat_disc_ref_z
+090	acdc_spine_7T	23	M	right	c4t2	c2t3	c3	55
+093	acdc_spine_7T	29	M	right	c3t2	c2t3	c3	51
+094	acdc_spine_7T	n/a	M	right	c4t2	c2t3	c4	47
+095	acdc_spine_7T	40	M	right	c2t1	c1t2	c3	50
+096	acdc_spine_7T	20	F	right	c2t1	c2t3	c3	49
+098	acdc_spine_7T	22	F	right	c3t1	c2t4	c3	50
+100	acdc_spine_7T	23	M	right	c3t1	c2t2	c3	50
