@@ -2,21 +2,21 @@
 "project_dir":"/cerebro/cerebro1/dataset/spine_7T/derivatives/acdc_spine_7T_project/",
 "raw_dir":"/spine_7T/rawdata/",
 "manual_dir":"/cerebro/cerebro1/dataset/spine_7T/derivatives/acdc_spine_7T_project/manual/",
+"tools_dir":{"main_codes":"/cerebro/cerebro1/dataset/spine_7T/derivatives/acdc_spine_7T_project/acdc_spine_7T_analysis/"},
+    
 "PAM50_cord":"PAM50_cord_c1t4.nii.gz",
 "PAM50_t2":"PAM50_t2_c1t4.nii.gz",
 "PAM50_csf":"PAM50_cs_c1t4f.nii.gz",
 "structures":["spinalcord"],
 
-
+"participants_IDs":["100"],
+    
 "design_exp":{"ses_nb":1,
               "ses_names":[""],
-              "ses_names_0exemple":[""],
-              "task_nb":4,
             "task_names1":["motor","rest"],
             "task_names":["motor"],
-            "acq_names":["shimSlice+1mm+sms2"],
-            "acq_names1":["shimBase+3mm","shimSlice+3mm","shimBase+1mm+sms2","shimSlice+1mm+sms2"],
-             "run_names":{"task-motor_acq-shimBase+3mm":["run-01","run-02"],
+            "acq_names":["shimSlice+3mm"],
+             "run_names":{"task-motor_acq-shimBase+3mm":[""],
                           "task-motor_acq-shimSlice+3mm":["run-01","run-02"],
                           "task-motor_acq-shimBase+1mm+sms2":[""],
                           "task-motor_acq-shimSlice+1mm+sms2":[""],
@@ -54,13 +54,13 @@
  
  "acq_params":{"TR":""},
  
- "tools_dir":{"main_codes":"/cerebro/cerebro1/dataset/spine_7T/derivatives/acdc_spine_7T_project/acdc_spine_7T_analysis/",
-            "spm_dir":"/cerebro/cerebro1/dataset/bmpd/derivatives/thibault_test/code/toolbox/spm12/"},
 
-"participants_IDs":["100"],
+
+
  "files_specificities":{"T2star":{"090":"run-04"},
  "func":{"090":{"task-motor_acq-shimBase+3mm":["run-01"],"task-motor_acq-shimSlice+3mm":["run-03"]},
  "095":{"task-motor_acq-shimBase+3mm":["run-01","run-02"],"task-motor_acq-shimSlice+3mm":["run-01"]},
  "096":{"task-motor_acq-shimBase+3mm":["run-01","run-02"],"task-motor_acq-shimSlice+3mm":["run-01"]},
- "100":{"task-motor_acq-shimBase+3mm":[""],"task-motor_acq-shimSlice+3mm":[""]}}}
+"100":{"task-motor_acq-shimSlice+3mm":[""]},
+ "101":{"task-rest_acq-shimSlice+1mm+sms2":["run-03"]}}}
 } 

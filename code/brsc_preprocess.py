@@ -572,7 +572,7 @@ class Preprocess_Sc:
                     os.system(cmd_qc)
                     qc_indiv_path = self.qc_dir + "/"+ self.qc_dir.split("/")[-3] +"/sub-" + ID + "/anat/sct_deepseg_sc/" # QC path
                 else:
-                    qc_indiv_path=self.qc_dir + "/"+ self.qc_dir.split("/")[-3] +"/sub-" + ID + "/anat/sct_deepseg_sc/" # QC path
+                    qc_indiv_path=self.qc_dir + "/"+ self.qc_dir.split("/")[-3] +"/sub-" + ID + "/anat/sct_deepseg/" # QC path
 
             ## plot qc
             self._plot_qc(ID=ID, ses_name=ses_name, task_name=task_name, tag="segmentation", qc_indiv_path=qc_indiv_path, fig_size=(10,10),alpha=0.8)
