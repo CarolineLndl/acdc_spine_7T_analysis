@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/console"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/console.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/console-complete.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-install.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-mkdir.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-download.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-update.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-patch.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-configure.rule"
+		},
+		{
+			"file" : "/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/console-prefix/src/console-stamp/console-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"console"
+		],
+		"name" : "console"
+	}
+}

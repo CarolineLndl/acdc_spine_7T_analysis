@@ -75,6 +75,8 @@ Files are organized according to the BIDS standard:
 │   │   └── func
 │   │       ├── sub-100_task-motor_acq-shimBase+3mm_bold.json
 │   │       ├── sub-100_task-motor_acq-shimBase+3mm_bold.nii.gz
+│   │       ├── sub-100_task-rest_acq-shimBase+3mm_physio.json
+│   │       ├── sub-100_task-rest_acq-shimBase+3mm_physio.tsv.gz
 │   │       └── ...
 ├── sourcedata  # Original DICOM and behavioral data
 │   ├── sub-100
@@ -95,7 +97,8 @@ Files are organized according to the BIDS standard:
 </details>
 
 ### 1.3 Get data into BIDS format 🗂️
-Use `dcm2bids` to convert raw data:
+#### Convert mri data
+Use `dcm2bids` to convert raw mri data:
 
 ```bash
 cd $project_dir/acdc_spine_7T_analysis/code/
@@ -107,7 +110,15 @@ dcm2bids -d $main_dir/sourcedata/sub-$ID/mri/ \
 ```
 
 - `$ID` is the subject ID (e.g., 103)
-- For full data conversion instructions, see: `/acdc_spine_7T_analysis/code/00_convert_data.sh`
+- For full data conversion instructions, see: `/acdc_spine_7T_analysis/code/convert_data/00_convert_mriData.sh`
+
+#### Convert physio data
+Use `/acdc_spine_7T_analysis/code/convert_data/00_convert_physioData.sh` to convert raw physio data into BIDS format.
+
+```bash
+cd $project_dir/acdc_spine_7T_analysis/code/convert_data/
+bash 00_convert_physioData.sh
+``` 
 
 ---
 
@@ -115,6 +126,7 @@ dcm2bids -d $main_dir/sourcedata/sub-$ID/mri/ \
 Files for preprocessing are in this repository.
 
 - **code/**: Functions used by notebooks. Do not modify scripts unless necessary.
+  - **convert_data/**: Scripts to convert raw mri and physio data into BIDS format.
 - **config/**: Configuration files for paths and parameters.
   - `config_preprocess_spine7T.json` is used by `01_spine7T_preprocessing.ipynb`
     - Modify paths line 1-5 as needed
@@ -125,6 +137,7 @@ Files for preprocessing are in this repository.
   - `participants.tsv` contains demographical information and important info for preprocessing (*e.g.,* slice number for vertebrae labeling initiation)
 - **notebooks/**: Dedicated notebooks for each analysis step. Use `verbose=True` to check outputs. Completed notebooks can be saved in HTML.
 - **template images**: Used for analyses; do not modify.
+- **log**: Log files generated during processing run from bash script.
 
 ### 2.1 Preprocessing 🤯
 - Update `config_preprocess_spine7T.json`
@@ -138,8 +151,9 @@ Files for preprocessing are in this repository.
 
 ##### 👉 Visual check and manual corrections
 <details>
-<summary>Click to expand folder tree</summary>
-  - **I.a Motion correction (mask)**: ✏️
+<summary>Click to expand </summary>
+
+  - **I.a Motion correction (mask)** : ✏️
   check the automatic centerline detection and the mask used for motion correction, if needed, manually correct the centerline with:
   ```
   ctrl_sc_files_, mask_sc_files_=preprocess_Sc.moco_mask(ID=ID,i_img=mean_func_f[ID][tag][run_nb],
@@ -192,5 +206,13 @@ Files for preprocessing are in this repository.
 > - **IV. Registration to template:** check if the parameters for the registration are ok. Parameters can be easily changed in the Notebook and will be then modified as default parameters in the script.
 
 ### 2.2 Denoising (TBD) 🧹
+
+Should be run after preprocessing.
+- Update `config_preprocess_spine7T.json`
+- Two options to run preprocessing:
+  1. **Notebook**: `notebooks/01_spine7T_denoising.ipynb` (recommended for QC and step-by-step checks and manual adjustments)
+  2. **Script** (main path should be manually changed): `bash code/run_batch_denoising.sh` (runs steps automatically, less flexible)
+
+No manual corrections are requiered for this step.
 
 ### 2.3 First-level Analysis (TBD) 📈

@@ -1,0 +1,7 @@
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/install.dir
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/list_install_components.dir
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/rebuild_cache.dir
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/console.dir
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/install/strip.dir
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/install/local.dir
+/cerebro/cerebro1/dataset/bmpd/code/dcm2niix/build/CMakeFiles/edit_cache.dir

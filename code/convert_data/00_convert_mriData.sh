@@ -36,3 +36,41 @@ python sortDCM.py -d "/cerebro/cerebro1/dataset/spine_7T/sourcedata/sub-"$ID"/"$
 cd $project_dir"/acdc_spine_7T_analysis/code/convert_data/"
 dcm2bids -d $main_dir"/sourcedata/sub-$ID/mri/" -p $ID -c $project_dir"/acdc_spine_7T_analysis/config/config_bids_6Nov25.txt" -o $main_dir"/rawdata/"
 
+#Compress physio files ------------------------------------------------
+cd $main_dir"/sourcedata/sub-"$ID"/pmu/"
+EXTENSIONS=("ext" "puls" "resp")
+# Collect basenames from the known extensions only
+basenames=$(for ext in "${EXTENSIONS[@]}"; do
+    find . -maxdepth 1 -type f -name "*.${ext}" \
+        | sed 's|^\./||' | sed "s/\.${ext}$//"
+done | sort -u)
+
+for base in $basenames; do
+    files=()
+
+    # Collect existing files for this basename
+    for ext in "${EXTENSIONS[@]}"; do
+        f="${base}.${ext}"
+        [[ -f "$f" ]] && files+=("$f")
+    done
+
+    # Must have exactly 3 files (.ext, .puls, .resp)
+    if [[ ${#files[@]} -ne ${#EXTENSIONS[@]} ]]; then
+        echo "Skipping $base — missing .ext, .puls, or .resp"
+        continue
+    fi
+
+    # Create archive
+    tar -czf "${base}.tar.gz" "${files[@]}"
+    echo "Created: ${base}.tar.gz"
+done
+
+
+
+
+
+#Convert physio to BIDS
+cd $project_dir"/acdc_spine_7T_analysis/code/convert_data/"
+python physio2bids.py -t $main_dir"sourcedata/"$ID"/pmu/"$ID"_rest"$func_run".tar.gz" -s $ID -o $main_dir"/rawdata/" -v True
+
+
