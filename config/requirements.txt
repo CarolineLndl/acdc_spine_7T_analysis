@@ -1,0 +1,10 @@
+numpy
+scipy
+pandas
+matplotlib
+nibabel
+nilearn
+joblib
+ipython
+pydicom
+matlabengine==23.2.1
