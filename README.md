@@ -1,4 +1,4 @@
-# acdc_spine_7T_func
+# spine_7T_func
 
 ## Overview
 Processing of spinal cord functional data acquired at 7T.
@@ -10,12 +10,12 @@ Processing of spinal cord functional data acquired at 7T.
 ### 1.1 Dependencies 🔗
 Your environment should include:
 - Spinal Cord Toolbox 7.1
-- Conda environment: `acdc_spine_7T_analysis/config/environment.yml`
+- Conda environment: `spine_7T_analysis/config/environment.yml`
 - FSL
 - dcm2niix
 - MATLAB (for denoising step only)
 
-For an example on how to set up the environment, see: `acdc_spine_7T_analysis/config/spine_7T_env_032024.sh`
+For an example on how to set up the environment, see: `spine_7T_analysis/config/spine_7T_env_032024.sh`
 
 ### 1.2 Data organization 📑
 Files are organized according to the BIDS standard:
@@ -24,8 +24,8 @@ Files are organized according to the BIDS standard:
 
 ```
 ├── derivatives
-│   ├── acdc_spine_7T_project
-│   │   ├── acdc_spine_7T_analysis  # GitHub repository
+│   ├── spine_7T_project
+│   │   ├── spine_7T_analysis  # GitHub repository
 │   │   │   ├── ...
 │   │   ├── manual  # Manually corrected files
 │   │   │   └── sub-100

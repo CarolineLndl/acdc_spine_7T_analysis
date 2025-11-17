@@ -1,4 +1,4 @@
-main_dir=/cerebro/cerebro1/dataset/spine_7T/derivatives/spine_7T_project/spine_7T_analysis/
+root_dir=/cerebro/cerebro1/dataset/spine_7T/spine_7T_analysis/
 
-cd $main_dir"/log/"
-nohup python $main_dir/code/01_spine7T_preprocessing.py $main_dir"/log" .pynohup.out &
+cd $root_dir"/log/"
+nohup python $root_dir/code/01_spine7T_preprocessing.py $root_dir"/log" .pynohup.out &

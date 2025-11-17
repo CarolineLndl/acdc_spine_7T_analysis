@@ -45,10 +45,11 @@ class Preprocess_BrSc:
         # Class attributes -------------------------------------------------------------------------------------
         self.config = config # load config info
         self.participant_IDs= self.config["participants_IDs"] # list of the participants to analyze
-        self.main_dir=self.config["main_dir"] # main drectory of the project
-        self.raw_dir=self.config["main_dir"]+self.config["raw_dir"] # directory of the raw data
-        self.manual_dir=self.config["manual_dir"] # directory of the manual corrections
-        self.qc_dir=self.main_dir + self.config["preprocess_dir"]["QC_dir"] # directory of the QC outputs
+        self.root_dir=self.config["root_dir"] # main drectory of the project
+        self.raw_dir=self.root_dir + self.config["raw_dir"] # directory of the raw data
+        self.derivatives_dir=self.root_dir + self.config["derivatives_dir"] # directory of the derivatives data
+        self.manual_dir=self.derivatives_dir + self.config["manual_dir"] # directory of the manual corrections
+        self.qc_dir=self.derivatives_dir + self.config["preprocess_dir"]["QC_dir"] # directory of the QC outputs
        
         # Check for specificities in filenames ----------------------------------------------------------------
         for ID in self.participant_IDs:
@@ -68,7 +69,7 @@ class Preprocess_BrSc:
         for ID in self.participant_IDs:
             print(ID) if verbose==True else None
             if "preprocess_dir" in self.config.keys():
-                ID_preproc_dir=self.config["main_dir"] +self.config["preprocess_dir"]["main_dir"].format(ID) # directory of the preprocess data
+                ID_preproc_dir=self.derivatives_dir +self.config["preprocess_dir"]["main_dir"].format(ID) # directory of the preprocess data
                 print(ID_preproc_dir) if verbose==True else None
 
                 if not os.path.exists(ID_preproc_dir):
@@ -90,8 +91,8 @@ class Preprocess_BrSc:
                     print("New folders in preprocess dir have been created") if verbose==True else None
                 
             #create manual correction folder if not already existing (>>> improve: add session folders)
-            if not os.path.exists(self.config["manual_dir"] + "/sub-" + ID):
-                ID_manual_dir=self.config["manual_dir"] + "/sub-" + ID
+            if not os.path.exists(self.manual_dir + "/sub-" + ID):
+                ID_manual_dir=self.manual_dir + "/sub-" + ID
                 os.mkdir(ID_manual_dir)
                 for ses_name in self.config["design_exp"]['ses_names']:
                     ses_dir="/" + ses_name if int(self.config["design_exp"]["ses_nb"])>0 else ""
@@ -142,11 +143,11 @@ class Preprocess_Sc:
     def __init__(self, config):
         self.config = config # load config info
         self.participant_IDs= self.config["participants_IDs"] # list of the participants to analyze
-        self.main_dir=self.config["main_dir"] # main drectory of the project
-        self.raw_dir=self.config["main_dir"]+self.config["raw_dir"] # directory of the raw data
-        self.manual_dir=self.config["manual_dir"] # directory of the manual corrections
-        self.qc_dir=self.main_dir + self.config["preprocess_dir"]["QC_dir"] # directory of the QC outputs
-
+        self.root_dir=self.config["root_dir"] # main drectory of the project
+        self.raw_dir=self.root_dir + self.config["raw_dir"] # directory of the raw data
+        self.derivatives_dir=self.root_dir + self.config["derivatives_dir"] # directory of the derivatives data
+        self.manual_dir=self.derivatives_dir + self.config["manual_dir"] # directory of the manual corrections
+        self.qc_dir=self.derivatives_dir + self.config["preprocess_dir"]["QC_dir"] # directory of the QC outputs
         
         # Check the structure type ----------------------------------------------------------------
         if len(self.config["structures"])>1:
@@ -204,12 +205,12 @@ class Preprocess_Sc:
             raise ValueError("Please provide the filename of the input image.")
 
         # --- Define directories -----------------------------------------------------------
-        preprocess_dir = self.config["main_dir"] + self.config["preprocess_dir"]["main_dir"].format(ID)
+        preprocess_dir = self.derivatives_dir + self.config["preprocess_dir"]["main_dir"].format(ID)
        
         # --- Define method and output folder ----------------------------------------------
         if manual==True:
             method="viewer"
-            o_folder=self.config["manual_dir"] + f"/sub-{ID}/{ses_name}/func/{task_name}/"
+            o_folder=self.manual_dir + f"/sub-{ID}/{ses_name}/func/{task_name}/"
         else:
             method="optic"
             if o_folder is None : # gave the default folder name if not provided
@@ -343,7 +344,7 @@ class Preprocess_Sc:
 
 
         # --- Define main folders ----------------------------------------------------------
-        preprocess_dir=self.config["main_dir"] +self.config["preprocess_dir"]["main_dir"].format(ID)
+        preprocess_dir=self.derivatives_dir +self.config["preprocess_dir"]["main_dir"].format(ID)
         if o_folder is None : # gave the default folder name if not provided
             o_folder=preprocess_dir + "/" + ses_name + self.config["preprocess_dir"]["func_moco"].format(task_name)
 
@@ -473,7 +474,7 @@ class Preprocess_Sc:
 
 
         # --- Define folders and filenames ----------------------------------------------------------------
-        preprocess_dir = os.path.join(self.config["main_dir"], self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
 
         if o_folder is None : # gave the default folder name if not provided
             if img_type=="func":
@@ -638,7 +639,7 @@ class Preprocess_Sc:
         
 
         # --- Define output folder and filenames ----------------------------------------------------------
-        preprocess_dir = os.path.join(self.config["main_dir"], self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
 
         if o_folder is None : # gave the default folder name if not provided
             if auto:
@@ -745,7 +746,7 @@ class Preprocess_Sc:
             param = "step=1,type=seg,algo=centermassrot:step=2,type=im,algo=syn,iter=5,slicewise=1,metric=CC,smooth=0"
 
         # --- Define output folder and filenames ----------------------------------------------------------
-        preprocess_dir = os.path.join(self.config["main_dir"], self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
 
         if o_folder is None:
             o_folder = os.path.join(preprocess_dir, f"{self.config['preprocess_dir'][tag + '_coreg']}")
@@ -756,7 +757,7 @@ class Preprocess_Sc:
         warp_from_PAM502anat = os.path.join(o_folder, f"sub-{ID}_from-PAM50_to-{tag}_mode-image_xfm.nii.gz") # warping field form PAM50 to anat
 
         # --- Use manual segmentation if available ---------------------------------------------------------
-        manual_seg = os.path.join(self.config["manual_dir"], f"sub-{ID}", ses_name, "anat", os.path.basename(seg_img))
+        manual_seg = os.path.join(self.manual_dir, f"sub-{ID}", ses_name, "anat", os.path.basename(seg_img))
         if os.path.exists(manual_seg):
             print("Segmentation file will be the manually corrected file") if verbose else None
             seg_img = manual_seg
@@ -847,9 +848,9 @@ class Preprocess_Sc:
         
         # --- Default template files -----------------------------------------------------------------------
         if PAM50_cord is None:
-            PAM50_cord = os.path.join(self.config["tools_dir"]["main_codes"], "template", self.config["PAM50_cord"])
+            PAM50_cord = os.path.join(self.root_dir + self.config["tools_dir"]["main_codes"], "template", self.config["PAM50_cord"])
         if PAM50_t2 is None:
-            PAM50_t2 = os.path.join(self.config["tools_dir"]["main_codes"], "template", self.config["PAM50_t2"])
+            PAM50_t2 = os.path.join(self.root_dir + self.config["tools_dir"]["main_codes"], "template", self.config["PAM50_t2"])
 
         # --- Tags for run/task ---------------------------------------------------------------------------
         run_tag = f"_{run_name}" if run_name else ""
@@ -870,7 +871,7 @@ class Preprocess_Sc:
                 param='step=1,type=seg,algo=centermass,metric=MeanSquares:step=2,algo=bsplinesyn,type=seg,slicewise=1,iter=5'
                     
         # --- Define output folder -------------------------------------------------------------------------
-        preprocess_dir = os.path.join(self.config["main_dir"], self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
 
         if img_type=="func":
             if o_folder is None : # gave the default folder name if not provided
@@ -954,7 +955,7 @@ class Preprocess_Sc:
         if dest_img==None:
             dest_img=[]
             for ID_nb in enumerate(i_imgs):
-                dest_img.append(self.config["tools_dir"]["main_codes"] + "/template/"+ self.config["PAM50_t2"])
+                dest_img.append(self.root_dir + self.config["tools_dir"]["main_codes"] + "/template/"+ self.config["PAM50_t2"])
                 
         else:
             dest_img=[dest_img] if isinstance(dest_img,str) else dest_img

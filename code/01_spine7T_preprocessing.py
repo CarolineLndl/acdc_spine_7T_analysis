@@ -37,7 +37,7 @@ with open('../config/config_preprocess_spine7T.json') as config_file: # the note
     config = json.load(config_file) # load config file should be open first and the path inside modified
 
 #import scripts
-sys.path.append(config["tools_dir"]["main_codes"] + "/code/") # Change this line according to your directory
+sys.path.append(config["root_dir"] + config["tools_dir"]["main_codes"] + "/code/") # Change this line according to your directory
 
 from brsc_preprocess import Preprocess_BrSc, Preprocess_Sc
 import brsc_utils as utils
@@ -78,12 +78,13 @@ participants_tsv = pd.read_csv('../config/participants.tsv', sep='\t')
 raw_func=[];json_f=[]
 raw_anat=[];# will contain the output filename for all participants.
 json_f={};raw_func={}
+derivatives_dir=config["root_dir"] + config["derivatives_dir"]
 for ID_nb,ID in enumerate(config["participants_IDs"]):
     json_f[ID]={}; raw_func[ID]={}
 
     #------ Select anat data (raw data were copied in the preprocess dir)
     run_tag = config["files_specificities"]["T2s"][ID] if ID in config.get("files_specificities", {}).get("T2s", {}) else ""
-    raw_anat.append(glob.glob(config["main_dir"] + config["preprocess_dir"]["main_dir"].format(ID) + "/anat/" + config["preprocess_f"]["anat_raw"].format(ID,""))[0])
+    raw_anat.append(glob.glob(derivatives_dir + config["preprocess_dir"]["main_dir"].format(ID) + "/anat/" + config["preprocess_f"]["anat_raw"].format(ID,""))[0])
 
     #------ Select func data
     for task_name in config["design_exp"]["task_names"]:
@@ -92,21 +93,17 @@ for ID_nb,ID in enumerate(config["participants_IDs"]):
             json_f[ID][tag]=[];raw_func[ID][tag]=[]
             if tag in config.get("files_specificities", {}).get("func", {}).get(ID,{}):
                 for run in config["files_specificities"]["func"][ID][tag]:
-                    json_f[ID][tag].append(glob.glob(config["main_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID +  "_" +tag + "_" +run+ "*.json")[0])
-                    raw_func[ID][tag].append(glob.glob(config["main_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID + "_" + tag + "_" +run+ "*.nii.gz")[0])
+                    json_f[ID][tag].append(glob.glob(config["root_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID +  "_" +tag + "_" +run+ "*.json")[0])
+                    raw_func[ID][tag].append(glob.glob(config["root_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID + "_" + tag + "_" +run+ "*.nii.gz")[0])
 
             else:
                 for run in config["design_exp"]["run_names"][tag]:
-                    json_file=glob.glob(config["main_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID + "_" + tag + "_" +run+ "*.json")
-                    func_file=glob.glob(config["main_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID + "_" + tag + "_" +run+ "*.nii.gz")
+                    json_file=glob.glob(config["root_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID + "_" + tag + "_" +run+ "*.json")
+                    func_file=glob.glob(config["root_dir"]+config["raw_dir"] + "sub-" + ID+  "/func/sub-" + ID + "_" + tag + "_" +run+ "*.nii.gz")
                     if json_file:
                         json_f[ID][tag].append(json_file[0])
                     if func_file:
                         raw_func[ID][tag].append(func_file[0])
-
-
-      
-
 
 # ## <font color=#B2D732> <span style="background-color: #4424D6"> A/ Spinal cord preprocessings
 
@@ -128,7 +125,7 @@ for ID_nb, ID in enumerate(config["participants_IDs"]):
             tag="task-" + task_name + "_acq-" + acq_name
             mean_func_f[ID][tag]=[];mask_sc_files[ID][tag]=[];ctrl_sc_files[ID][tag]=[]
             for run_nb,run_name in enumerate(design_exp[ID][tag]):
-                o_dir=config["main_dir"]+config["preprocess_dir"]["main_dir"].format(ID)+  "/func/" +tag + '/'
+                o_dir=derivatives_dir+config["preprocess_dir"]["main_dir"].format(ID)+  "/func/" +tag + '/'
                 o_img=o_dir +  os.path.basename(raw_func[ID][tag][run_nb]).split(".")[0] + "_tmean.nii.gz"
                 mean_func_f[ID][tag].append(utils.tmean_img(ID=ID,i_img=raw_func[ID][tag][run_nb],o_img=o_img,verbose=False))
                 ctrl_sc_files_, mask_sc_files_=preprocess_Sc.moco_mask(ID=ID,i_img=mean_func_f[ID][tag][run_nb],
@@ -247,7 +244,7 @@ for ID_nb, ID in enumerate(config["participants_IDs"]):
 
 
 warpT2w_PAM50_files=[]; # will contain the output filename for all participants.
-dir_manual=config["main_dir"]+ config["preprocess_dir"]["main_dir"] +"/manual/sub-{}/anat/"
+dir_manual=derivatives_dir +"/manual/sub-{}/anat/"
 seg_anat_sc_final_file=[]
 for ID_nb, ID in enumerate(config["participants_IDs"]):
     manual_file=dir_manual.format(ID,ID) + os.path.basename(seg_anat_sc_files[ID_nb]) 
