@@ -1,4 +1,4 @@
-# spine_7T_func
+# Project: Spinal cord fMRI analysis at 7T
 
 ## Overview
 Processing of spinal cord functional data acquired at 7T.
@@ -9,13 +9,59 @@ Processing of spinal cord functional data acquired at 7T.
 
 ### 1.1 Dependencies 🔗
 Your environment should include:
+- Python (3.10.14 was used)
 - Spinal Cord Toolbox 7.1
-- Conda environment: `spine_7T_analysis/config/environment.yml`
+- Conda environment: `spine_7T_analysis/config/requirements.txt`
 - FSL
 - dcm2niix
 - MATLAB (for denoising step only)
 
 For an example on how to set up the environment, see: `spine_7T_analysis/config/spine_7T_env_032024.sh`
+
+
+<details>
+<summary>👉 How to install dependencies</summary>
+
+#### a. Create the conda environment 
+
+Make sure conda is installed: see here [Installation instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+Create the appropriate conda environment:
+```bash
+conda create --name CL_spine_7T_env_py10 python=3.10
+conda activate CL_spine_7T_env_py10
+pip install -r requirements.txt
+```
+
+#### b. Install toolboxes
+**Toolbox to transform data:**
+- dcm2niix : see here [PyPI page](https://pypi.org/project/dcm2niix/)  
+
+**Toolboxes for preprocessing**
+- Spinal Cord Toolbox 7.1: [Installation instructions](https://spinalcordtoolbox.com/en/latest/user_section/installation.html)
+- FSL: see here [Installation instructions](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation)
+
+**Toolboxes for denoising:**
+- Verify wich version of MATLAB is compatible with your Python version (*vis versa*): see here [Compatibility table](https://www.mathworks.com/support/requirements/python-compatibility.html)
+- Install MATLAB: see here [Installation instructions](https://www.mathworks.com/help/install/)
+- Install MATLAB engine for Python: see here [Installation instructions](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html)
+
+```bash
+# Example for MATLAB R2023b
+LD_LIBRARY_PATH="/export01/local/matlab23b/sys/os/glnxa64:$toolbox_home/libraries"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/export01/local/matlab23b/bin/" # The LD_LIBRARY_PATH environment variable tells the system where to find shared libraries
+cd /export/local/matlab23b/extern/engines #Navigate to MATLAB Folder, engines subfolder
+python -m pip install matlabengine==23.2.10 #Install MATLAB engine for Python
+```
+
+#### c. Load your environment
+This step should be done each time you open a new terminal session to work on the project. It will set up all necessary path for SCT, FSL and Matlab and activate the conda environment.
+> ⚠️ *Qt version conflict: SCT and MATLAB may use incompatible Qt libraries. If you don’t need MATLAB, consider commenting out the MATLAB path in the setup script to avoid errors. If you need MATLAB for denoising, uncomment the MATLAB path, but be aware that Qt-related errors may appear when using SCT manually.*
+
+```bash
+source spine_7T_analysis/config/spine_7T_env_17112025.sh
+```
+
+</details>
 
 ### 1.2 Data organization 📑
 Files are organized according to the BIDS standard:
@@ -23,9 +69,25 @@ Files are organized according to the BIDS standard:
 <summary>Click to expand folder tree</summary>
 
 ```
+├── spine_7T_analysis  # GitHub repository
+│   ├── code
+│     ├── convert_data
+│     │   ├── 00_convert_mriData.sh
+│     │   └── ...
+│     ├── ...
+│   ├── config
+│     ├── config_preprocess_spine7T.json
+│     ├── participants.tsv
+│     └── ...
+│   ├── notebooks
+│     ├── 01_spine7T_preprocessing.ipynb
+│     └── ...
+│   ├── template_images
+│     ├── ...
+│   └── log
+│       ├── ...
 ├── derivatives
 │   ├── spine_7T_project
-│   │   ├── spine_7T_analysis  # GitHub repository
 │   │   │   ├── ...
 │   │   ├── manual  # Manually corrected files
 │   │   │   └── sub-100
@@ -151,7 +213,7 @@ Files for preprocessing are in this repository.
 
 ##### 👉 Visual check and manual corrections
 <details>
-<summary>Click to expand </summary>
+<summary>For more details, click to expand </summary>
 
   - **I.a Motion correction (mask)** : ✏️
   check the automatic centerline detection and the mask used for motion correction, if needed, manually correct the centerline with:
