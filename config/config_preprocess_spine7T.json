@@ -57,7 +57,6 @@
  
 
 
-
  "files_specificities":{"T2star":{"090":"run-04"},
  "func":{"090":{"task-motor_acq-shimBase+3mm":["run-01"],"task-motor_acq-shimSlice+3mm":["run-03"]},
  "095":{"task-motor_acq-shimBase+3mm":["run-01","run-02"],"task-motor_acq-shimSlice+3mm":["run-01"]},
