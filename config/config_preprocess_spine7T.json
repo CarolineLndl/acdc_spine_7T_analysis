@@ -10,13 +10,13 @@
 "PAM50_csf":"PAM50_cs_c1t4f.nii.gz",
 "structures":["spinalcord"],
 
-"participants_IDs":["101"],
+"participants_IDs":["101","102","103","104"],
     
 "design_exp":{"ses_nb":1,
               "ses_names":[""],
             "task_names1":["motor","rest"],
-            "task_names":["rest"],
-            "acq_names":["shimBase+3mm"],
+            "task_names":["moror"],
+            "acq_names":["shimBase+3mm","shimSlice+3mm"],
              "run_names":{"task-motor_acq-shimBase+3mm":[""],
                           "task-motor_acq-shimSlice+3mm":["run-01","run-02"],
                           "task-motor_acq-shimBase+1mm+sms2":[""],
@@ -63,5 +63,6 @@
  "095":{"task-motor_acq-shimBase+3mm":["run-01","run-02"],"task-motor_acq-shimSlice+3mm":["run-01"]},
  "096":{"task-motor_acq-shimBase+3mm":["run-01","run-02"],"task-motor_acq-shimSlice+3mm":["run-01"]},
 "100":{"task-motor_acq-shimSlice+3mm":[""]},
- "101":{"task-rest_acq-shimSlice+1mm+sms2":["run-03"]}}}
+ "101":{"task-rest_acq-shimSlice+1mm+sms2":["run-03"]},
+ "102":{"task-motor_acq-shimSlice+3mm":[""]},}}
 } 
