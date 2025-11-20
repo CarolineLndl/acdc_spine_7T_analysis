@@ -134,7 +134,7 @@ for ID_nb, ID in enumerate(config["participants_IDs"]):
             for run_nb,run_name in enumerate(design_exp[ID][tag]):
                 o_dir=derivatives_dir+config["preprocess_dir"]["main_dir"].format(ID)+  "/func/" +tag + '/'
                 o_img=o_dir +  os.path.basename(raw_func[ID][tag][run_nb]).split(".")[0] + "_tmean.nii.gz"
-                mean_func_f[ID][tag].append(utils.tmean_img(ID=ID,i_img=raw_func[ID][tag][run_nb],o_img=o_img,verbose=False))
+                mean_func_f[ID][tag].append(utils.tmean_img(ID=ID,i_img=raw_func[ID][tag][run_nb],o_img=o_img,redo=redo,verbose=False))
                 ctrl_sc_files_, mask_sc_files_=preprocess_Sc.moco_mask(ID=ID,i_img=mean_func_f[ID][tag][run_nb],
                                                                        radius_size=25,task_name=tag,
                                                                        manual=manual_centerline,

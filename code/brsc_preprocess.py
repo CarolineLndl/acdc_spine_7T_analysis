@@ -762,8 +762,14 @@ class Preprocess_Sc:
             print("Segmentation file will be the manually corrected file") if verbose else None
             seg_img = manual_seg
         
+         # --- Use manual labels if available ---------------------------------------------------------
+        manual_labels = glob.glob(os.path.join(self.manual_dir, f"sub-{ID}", ses_name, "anat", "*label-ivd_mask.nii.gz"))
+        if manual_labels:
+            print("Labels file will be the manually corrected file") if verbose else None
+            labels_img = manual_labels[0]
+
         # --- Run registration ---------------------------------------------------------------------------
-        if not os.path.exists(warp_from_anat2PAM50):
+        if not os.path.exists(warp_from_anat2PAM50) or redo:
             cmd_coreg=f"sct_register_to_template -i {i_img} -s {seg_img} -ldisc {labels_img} -c {img_type} -param {param} -ofolder {o_folder} -qc {self.qc_dir}/"
             print(">>>>> Registration step is running for sub-" + ID) if verbose == True else None
             os.system(cmd_coreg)
