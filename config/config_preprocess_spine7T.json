@@ -42,7 +42,7 @@
                   "func_moco":"sub-{}*{}*{}*moco.nii.gz",
                   "moco_params":"moco_params*_{}*{}.nii.gz",
                   "func_seg":"*{}*_seg.nii.gz",
-                  "func_csf":"*{}*_seg_csf.nii.gz",
+                  "func_csf":"*{}*_CSF_seg.nii.gz",
                   "func_warp":"*{}*func_to_PAM50*.nii.gz",
                   "anat_coreg":""
                   },
