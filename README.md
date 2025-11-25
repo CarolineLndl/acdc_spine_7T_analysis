@@ -29,7 +29,7 @@ Create the appropriate conda environment:
 ```bash
 conda create --name CL_spine_7T_env_py10 python=3.10
 conda activate CL_spine_7T_env_py10
-pip install -r requirements.txt
+pip install -r config/requirements.txt
 ```
 
 #### b. Install toolboxes
