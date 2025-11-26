@@ -54,11 +54,21 @@ pip install -r config/requirements.txt
 
 
 #### c. Load your environment
-This step should be done each time you open a new terminal session to work on the project. It will set up all necessary path for SCT, FSL and Matlab and activate the conda environment.
+**Option 1 - Manually activate conda environment**
+If all required toolboxes are already available in your path
+*config/spine_7T_env.sh file can be omitted and you can just activate the conda environment:
+```bash
+source activate spine_7T_env_py10
+```
+
+**Option 2 — Modify and run the provided setup script** 
+This script configures all required paths for SCT, FSL, and MATLAB, and activates the conda environment. 
+Manualy change the paths to match your installation paths in *config/spine_7T_env.sh*
+You should run it each time you start a new terminal session for this project.
 > ⚠️ *Qt version conflict: SCT and MATLAB may use incompatible Qt libraries. If you don’t need MATLAB, consider commenting out the MATLAB path in the setup script to avoid errors. If you need MATLAB for denoising, uncomment the MATLAB path, but be aware that Qt-related errors may appear when using SCT manually.*
 
 ```bash
-source spine_7T_analysis/config/spine_7T_env_17112025.sh
+source spine_7T_analysis/config/spine_7T_env.sh
 ```
 
 </details>

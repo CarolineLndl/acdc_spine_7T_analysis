@@ -7,7 +7,7 @@
 # toolboxes (SCT,FSL).
 #
 # Dependencies:
-# - Anaconda/Conda (Python 3.9 environment: CL_spine_7T_env_py9)
+# - Anaconda/Conda (Python 10 environment: spine_7T_env_py10)
 # - Spinal Cord Toolbox (SCT)
 # - FSL (FMRIB Software Library)
 # - Matlab (for denoising step)
@@ -17,8 +17,7 @@
 # ----------------------------
 # Paths to tools
 # ----------------------------
-toolbox_home=/cerebro/cerebro1/dataset/bmpd/derivatives/thibault_test/code/toolbox
-anaconda_dir=/export02/data/landelle/anaconda/
+anaconda_dir=$(conda info --base)
 
 SCT_DIR=/cerebro/cerebro1/dataset/spine_7T/derivatives/toolboxes/spinalcordtoolbox
 FSLDIR=/cerebro/cerebro1/dataset/bmpd/derivatives/thibault_test/code/toolbox/fsl
@@ -32,7 +31,6 @@ export MPLBACKEND=Agg              # matplotlib backend for non-GUI rendering
 # ----------------------------
 export PATH="$SCT_DIR/bin:$PATH"   # spinalcordtoolbox
 export PATH=${FSLDIR}/bin:${PATH} # FSL
-#export PATH="/usr/lib/ants:${PATH}"             # ANTS
 
 
 # ----------------------------
