@@ -39,7 +39,7 @@ export PATH=${FSLDIR}/bin:${PATH} # FSL
 # Python setup
 # ----------------------------
 source ${anaconda_dir}/etc/profile.d/conda.sh
-conda activate CL_spine_7T_env_py10
+conda activate spine_7T_env_py10
 echo "++ Python executable: $(which python)"
 echo "++ Python version: $(python --version)"
 

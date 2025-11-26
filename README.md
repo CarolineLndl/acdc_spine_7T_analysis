@@ -27,8 +27,8 @@ For an example on how to set up the environment, see: `spine_7T_analysis/config/
 Make sure conda is installed: see here [Installation instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 Create the appropriate conda environment:
 ```bash
-conda create --name CL_spine_7T_env_py10 python=3.10
-conda activate CL_spine_7T_env_py10
+conda create --name spine_7T_env_py10 python=3.10
+conda activate spine_7T_env_py10
 pip install -r config/requirements.txt
 ```
 
