@@ -23,9 +23,6 @@ For an example on how to set up the environment, see: `spine_7T_analysis/config/
 <summary>👉 How to install dependencies</summary>
 
 #### a. Install toolboxes
-**Toolbox to transform data:**
-- dcm2niix : see here [PyPI page](https://pypi.org/project/dcm2niix/)  
-
 **Toolboxes for preprocessing**
 - Spinal Cord Toolbox 7.1: [Installation instructions](https://spinalcordtoolbox.com/en/latest/user_section/installation.html)
 - FSL: see here [Installation instructions](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation)
