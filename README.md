@@ -16,7 +16,7 @@ Your environment should include:
 - dcm2niix
 - MATLAB (for denoising step only)
 
-For an example on how to set up the environment, see: `spine_7T_analysis/config/spine_7T_env_032024.sh`
+For an example on how to set up the environment, see: `spine_7T_analysis/config/spine_7T_env.sh`
 
 
 <details>
@@ -294,14 +294,31 @@ You can for exemple run the script and then manually check and correct specific 
 > - **I. Motion correction:** try different parameters for the mask size, or different reference images (mean functional, middle volume, etc). Parameters can be easily changed in the Notebook and will be then modified as default parameters in the script.
 > - **IV. Registration to template:** check if the parameters for the registration are ok. Parameters can be easily changed in the Notebook and will be then modified as default parameters in the script.
 
-### 2.2 Denoising (TBD) 🧹
+### 2.2 Denoising 🧹
 
 Should be run after preprocessing.
 - Update `config_preprocess_spine7T.json`
-- Two options to run preprocessing:
-  1. **Notebook**: `notebooks/02_spine7T_denoising.ipynb` (recommended for QC and step-by-step checks and manual adjustments)
-  2. **Script** (main path should be manually changed): `bash code/run_batch_denoising.sh` (runs steps automatically, less flexible)
+- ⚠️ csf segmentation should be checked and manually corrected if needed before running the denoising.
+- Details on the different steps are in the .py script and notebook.
 
-No manual corrections are requiered for this step.
+#### Two options to run preprocessing:
+**Option 1 - bash script** 
+  ▸ runs steps automatically: recommanded to run all steps at once 
+  ▸ less flexible than the notebook
+  ▸ By default all the steps are rerun even if some outputs already exist.
+```bash
+bash code/run_batch_denoising.sh
+```
+
+**Option 2 - Notebook** 
+  ▸ run one step at a time: recommended for QC and step-by-step checks
+  ▸ more flexible than the script: parameters can be easily changed and tested
+  ▸ `notebooks/02_spine7T_denoising.ipynb`
+  ▸ In this case you should set up [jupyter notebook](https://jupyter.org/) first:
+
+```bash
+jupyter lab --no-browser --port=12344 --NotebookApp.token=''
+```
+
 
 ### 2.3 First-level Analysis (TBD) 📈

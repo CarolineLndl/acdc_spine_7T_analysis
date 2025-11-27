@@ -28,27 +28,25 @@
 
 % /!\ This function is adapted to siemens recordings acquired without being triggered by fMRI acquisition.
 %-----------------------------------------------------------------------
-function Tapas=Tapas_BMPD(sub_name, inputDir, func_img, TR, frq_physio,json_file,  nb_slices,  csf_mask, cardio_file, resp_file, trigger_file,outfile_name,outputDir,config)
-config=struct(config); % load config parameters
-addpath(config.tools_dir.spm_dir) % path for SPM
+function Tapas=Tapas_physio(sub_name, inputDir, func_img, TR, frq_physio,json_file,  nb_slices,  csf_mask, cardio_file, resp_file, trigger_file,outfile_name,outputDir,config)
 double(TR)
+config=struct(config); % load config parameters
+addpath(config.root_dir, config.tools_dir.spm_dir); % path for SPM
 
-if json_file==1
-frq_physio=[]   
+
+if json_file=='true'
+frq_physio=[]  ;
 else
-frq_physio=[double(1/double(frq_physio))]
+frq_physio=[double(1/double(frq_physio))];
 end
 
-int64(nb_slices) % number of slices in int64 format
-start_acq=0
+
+int64(nb_slices); % number of slices in int64 format
+start_acq=0;
 
 
+slice_ref=[1:nb_slices]; % slice-specific regressors will be computed 
 
-if config.denoising_params=="slice_wise"
-slice_ref=[1:nb_slices] % slice-specific regressors will be computed 
-else
-    slice_ref=[round(double(nb_slices)/2)];
-end
 %ROIs{1,1} = csf_mask;
 %ROIs{2,1} = wm_mask;
 %ROIs
@@ -59,15 +57,16 @@ end
 % in case the input file was zipped
 
  % 'TAPAS PhysIO Toolbox' ================================================================
-f = spm_select('ExtFPList',fullfile(inputDir),func_img,Inf); % listes d'images 3D 
-ff = fullfile(inputDir,func_img);        % Une image 4D % 4D images
+regexEscaped = regexptranslate('escape', func_img); % Escape regex special characters in filename
+f = spm_select('ExtFPList',fullfile(inputDir),['^' regexEscaped '$'],Inf); % listes d'images 3D 
+ff = fullfile(inputDir,func_img);       % Une image 4D % 4D images
 
 size(f,1)
 matlabbatch{1}.spm.tools.physio.save_dir = {outputDir};
 
 % Log files (.tsv or .log files)
 if ext=='.tsv' 
-    matlabbatch{1}.spm.tools.physio.log_files.vendor = 'BIDS'; %'Siemens'; % Vendor Name depending on your MR Scanner/Physiological recording system
+    matlabbatch{1}.spm.tools.physio.log_files.vendor = 'BIDS' %'Siemens'; % Vendor Name depending on your MR Scanner/Physiological recording system
     matlabbatch{1}.spm.tools.physio.log_files.scan_timing = {''};  % last DICOM volume, header have the same time axis as the time stamp in the physiological log file
 
 elseif ext=='.txt' 
@@ -84,8 +83,8 @@ end
 
 
 
-matlabbatch{1}.spm.tools.physio.log_files.cardiac = {cardio_file};
-matlabbatch{1}.spm.tools.physio.log_files.respiration = {resp_file};
+matlabbatch{1}.spm.tools.physio.log_files.cardiac = {cardio_file}
+matlabbatch{1}.spm.tools.physio.log_files.respiration = {resp_file}
   % 
 matlabbatch{1}.spm.tools.physio.log_files.sampling_interval = frq_physio; % for Siemens, sampling rate is read directly from logfile, or you can put 1/400 => double check with physio.json
 matlabbatch{1}.spm.tools.physio.log_files.relative_start_acquisition = start_acq; %leave this parameter empty or 0 (e.g., since physiological recordings and acquisition timing are already synchronized scan_timing 

@@ -10,7 +10,7 @@
 "PAM50_csf":"PAM50_cs_c1t4f.nii.gz",
 "structures":["spinalcord"],
 
-"participants_IDs":["090","093","094","095","096","097","098","099"],
+"participants_IDs":["099","100"],
     
 "design_exp":{"ses_nb":1,
               "ses_names":[""],
@@ -40,18 +40,19 @@
 "preprocess_f":{"anat_raw":"sub-{}_{}T2star.nii.gz",
                   "func_mask":"",
                   "func_moco":"sub-{}*{}*{}*moco.nii.gz",
-                  "moco_params":"moco_params*_{}*{}.nii.gz",
-                  "func_seg":"*{}*_seg.nii.gz",
-                  "func_csf":"*{}*_CSF_seg.nii.gz",
+                  "moco_params":"moco_params*{}*{}.nii.gz",
+                  "func_seg":"sub-{}*{}*{}*_seg.nii.gz",
+                  "func_csf":"sub-{}*{}*{}*_CSF_seg.nii.gz",
                   "func_warp":"*{}*func_to_PAM50*.nii.gz",
                   "anat_coreg":""
                   },
     
 "denoising":{"raw_physio_dir":"spine_7T/",
-                 "dir":"denoising/nov25/",
-                "denoised_dir":"/1_func_denoised/sub-{}/{}/",
-                "norm_dir":"/2_func_in_template/sub-{}/{}/",
-                "smoothed_dir":"/3_func_smoothed/sub-{}/{}/"},
+    "dir":"denoising/nov25/",
+    "sub_dirs":["denoised_dir"],
+    "denoised_dir":"/sub-{}/{}/",
+    "norm_dir":"",
+    "smoothed_dir":""},
  
  "acq_params":{"TR":"",
 "physio_frq":400,
@@ -59,11 +60,11 @@
  
 
 
- "files_specificities":{"T2star":{"090":"run-04","097":"run-01"},
- "func":{"090":{"task-motor_acq-shimBase+3mm":["run-01"],"task-motor_acq-shimSlice+3mm":["run-02","run-03"]},
+ "files_specificities":{"T2star":{"090":"run-04","097":"run-01","105":"run-02","106":"run-02"},
+ "func":{"090":{"task-motor_acq-shimBase+3mm":["run-01"],"task-motor_acq-shimSlice+3mm":["run-02"]},
  "093":{"task-motor_acq-shimSlice+3mm":[""]},
 "094":{"task-motor_acq-shimSlice+3mm":[""]},
- "095":{"task-motor_acq-shimBase+3mm":["run-01","run-02"]},
+ "095":{"task-motor_acq-shimBase+3mm":["run-02"]},
  "096":{"task-motor_acq-shimBase+3mm":["run-01","run-02"]},
  "097":{"task-motor_acq-shimBase+3mm":["run-02","run-03"]},
  "098":{"task-motor_acq-shimBase+3mm":["run-01","run-02"]},
