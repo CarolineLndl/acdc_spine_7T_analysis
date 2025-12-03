@@ -1,8 +1,8 @@
 # Ignore dcm2niix folder
 code/convert_data/dcm2niix/
 
-#ignore log files
-log/nohup.out
+#ignore log folder
+log/
 
 # Python caches
 __pycache__/
@@ -21,3 +21,6 @@ code/.nfs*
 code/.nfs*
 
 ._*
+
+# Ignore notebooks folder
+notebooks/

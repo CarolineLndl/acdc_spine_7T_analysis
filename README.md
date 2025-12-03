@@ -89,10 +89,7 @@ Files are organized according to the BIDS standard:
 │     ├── config_preprocess_spine7T.json
 │     ├── participants.tsv
 │     └── ...
-│   ├── notebooks
-│     ├── 01_spine7T_preprocessing.ipynb
-│     └── ...
-│   ├── template_images
+│   ├── template
 │     ├── ...
 │   └── log
 │       ├── ...
@@ -196,7 +193,7 @@ bash 00_convert_physioData.sh
 ## 2. Analysis Pipelines 📊
 Files for preprocessing are in this repository.
 
-- **code/**: Functions used by notebooks. Do not modify scripts unless necessary.
+- **code/**: Functions and code to run the analyses. Do not modify the file.
   - **convert_data/**: Scripts to convert raw mri and physio data into BIDS format.
 - **config/**: Configuration files for paths and parameters.
   - `config_preprocess_spine7T.json` is used by `01_spine7T_preprocessing.ipynb`
@@ -206,35 +203,19 @@ Files for preprocessing are in this repository.
     - Specify file specificities for each subject if needed line 60-65 (*e.g.,* if extra run specify only the one to process)
 
   - `participants.tsv` contains demographical information and important info for preprocessing (*e.g.,* slice number for vertebrae labeling initiation)
-- **notebooks/**: Dedicated notebooks for each analysis step. Use `verbose=True` to check outputs. Completed notebooks can be saved in HTML.
 - **template images**: Used for analyses; do not modify.
-- **log**: Log files generated during processing run from bash script.
+- **log**: Log files generated during processing run from bash script (the folder is not tracked by git).
 
 ### 2.1 Preprocessing 🤯
 Update manually the config file:  `config_preprocess_spine7T.json`
   
-#### Two options to run preprocessing:
-**Option 1 - bash script** 
-  ▸ runs steps automatically: recommanded to run all steps at once 
-  ▸ less flexible than the notebook
-  ▸ By default all the steps are rerun even if some outputs already exist. If manual corrections were made, these files will be used as input for subsequent steps.
-```bash
-bash code/run_batch_preprocessing.sh
-```
-
-**Option 2 - Notebook** 
-  ▸ run one step at a time: recommended for QC and step-by-step checks and manual adjustments
-  ▸ more flexible than the script: parameters can be easily changed and tested
-  ▸ If manual corrections were made, these files will be used as input for subsequent steps.
-  ▸ `notebooks/01_spine7T_preprocessing.ipynb`
-  ▸ In this case you should set up [jupyter notebook](https://jupyter.org/) first:
+▸ runs steps automatically: recommanded to run all steps at once 
+▸ By default all the steps are rerun even if some outputs already exist. If manual corrections were made, these files will be used as input for subsequent steps.
 
 ```bash
-jupyter lab --no-browser --port=12344 --NotebookApp.token=''
+bash /spine_7t_fmri_analysis/code/run_batch_preprocessing.sh
 ```
 
-
-You can for exemple run the script and then manually check and correct specific steps in the notebook. 
 ⚠️ *Each step manually modified will imply that all subsequent steps need to be re-run. </span>* <br><br>
   
 ##### Visual check and manual corrections ✏️ 
@@ -290,34 +271,22 @@ You can for exemple run the script and then manually check and correct specific 
 
 
 ##### ‼️ What we want to try to improve
-> - **I. Motion correction:** try different parameters for the mask size, or different reference images (mean functional, middle volume, etc). Parameters can be easily changed in the Notebook and will be then modified as default parameters in the script.
-> - **IV. Registration to template:** check if the parameters for the registration are ok. Parameters can be easily changed in the Notebook and will be then modified as default parameters in the script.
+> - **I. Motion correction:** try different parameters for the mask size, or different reference images (mean functional, middle volume, etc). 
+> - **IV. Registration to template:** check if the parameters for the registration are ok. 
 
 ### 2.2 Denoising 🧹
 
 Should be run after preprocessing.
 - Update `config_preprocess_spine7T.json`
 - ⚠️ csf segmentation should be checked and manually corrected if needed before running the denoising.
-- Details on the different steps are in the .py script and notebook.
+- Details on the different steps are in the .py script and will be added in the Readme later.
 
 #### Two options to run preprocessing:
-**Option 1 - bash script** 
-  ▸ runs steps automatically: recommanded to run all steps at once 
-  ▸ less flexible than the notebook
-  ▸ By default all the steps are rerun even if some outputs already exist.
+
+▸ runs steps automatically: recommanded to run all steps at once 
+▸ By default all the steps are rerun even if some outputs already exist.
 ```bash
-bash code/run_batch_denoising.sh
+bash /spine_7t_fmri_analysis/code/run_batch_denoising.sh
 ```
-
-**Option 2 - Notebook** 
-  ▸ run one step at a time: recommended for QC and step-by-step checks
-  ▸ more flexible than the script: parameters can be easily changed and tested
-  ▸ `notebooks/02_spine7T_denoising.ipynb`
-  ▸ In this case you should set up [jupyter notebook](https://jupyter.org/) first:
-
-```bash
-jupyter lab --no-browser --port=12344 --NotebookApp.token=''
-```
-
 
 ### 2.3 First-level Analysis (TBD) 📈
