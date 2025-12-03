@@ -11,12 +11,12 @@ Processing of spinal cord functional data acquired at 7T.
 Your environment should include:
 - Python (3.10.14 was used)
 - Spinal Cord Toolbox 7.1
-- Conda environment: `spine_7T_analysis/config/requirements.txt`
+- Conda environment: `spine_7t_fmri_analysis/config/requirements.txt`
 - FSL
 - dcm2niix
 - MATLAB (for denoising step only)
 
-For an example on how to set up the environment, see: `spine_7T_analysis/config/spine_7T_env.sh`
+For an example on how to set up the environment, see: `spine_7t_fmri_analysis/config/spine_7T_env.sh`
 
 
 <details>
@@ -68,7 +68,7 @@ You should run it each time you start a new terminal session for this project.
 > ⚠️ *Qt version conflict: SCT and MATLAB may use incompatible Qt libraries. If you don’t need MATLAB, consider commenting out the MATLAB path in the setup script to avoid errors. If you need MATLAB for denoising, uncomment the MATLAB path, but be aware that Qt-related errors may appear when using SCT manually.*
 
 ```bash
-source spine_7T_analysis/config/spine_7T_env.sh
+source spine_7t_fmri_analysis/config/spine_7T_env.sh
 ```
 
 </details>
@@ -79,7 +79,7 @@ Files are organized according to the BIDS standard:
 <summary>Click to expand folder tree</summary>
 
 ```
-├── spine_7T_analysis  # GitHub repository
+├── spine_7t_fmri_analysis  # GitHub repository
 │   ├── code
 │     ├── convert_data
 │     │   ├── 00_convert_mriData.sh
@@ -96,13 +96,13 @@ Files are organized according to the BIDS standard:
 │     ├── ...
 │   └── log
 │       ├── ...
-├── derivatives
-│   ├── spine_7T_project
+├── spine_7t_fmri_analysis # Data directory
+│   ├── derivatives
 │   │   │   ├── ...
 │   │   ├── manual  # Manually corrected files
 │   │   │   └── sub-100
 │   │   │       ├── anat
-│   │   │       │   ├── sub-100_T2s_space-orig_label-ivd_mask.nii.gz
+│   │   │       │   ├── sub-100_T2star_space-orig_label-ivd_mask.nii.gz
 │   │   │       │   └── sub-100_T2star_space-orig_label-ivd_mask.nii.gz
 │   │   │       └── func
 │   │   │           ├── task-motor_acq-shimBase+3mm
@@ -110,8 +110,8 @@ Files are organized according to the BIDS standard:
 │   │   │           │   ├── sub-100_task-motor_acq-shimBase+3mm_bold_tmean_centerline.csv
 │   │   │           │   └── sub-100_task-motor_acq-shimBase+3mm_bold_tmean_centerline.nii.gz
 │   │   │           ├── ...
-│   │   └── preprocessing
-│   │       ├── nov25
+│   │   └── processing
+│   │       ├── preprocessing
 │   │       │   ├── QC  # QC reports
 │   │       │   │   ├── ...
 │   │       │   └── sub-100
@@ -137,8 +137,7 @@ Files are organized according to the BIDS standard:
 │   │       │           │   │   ...
 │   │       │           └── task-motor_acq-shimSlice+3mm
 │   │       │               ...
-│   │       └── ...  # Other processing versions
-├── rawdata  # BIDS-compliant raw data
+│   │       └── ...  # Other processing steps (denoising, first-level analysis, etc)
 │   ├── dataset_description.json
 │   ├── sub-100
 │   │   ├── anat
@@ -150,15 +149,15 @@ Files are organized according to the BIDS standard:
 │   │       ├── sub-100_task-rest_acq-shimBase+3mm_physio.json
 │   │       ├── sub-100_task-rest_acq-shimBase+3mm_physio.tsv.gz
 │   │       └── ...
-├── sourcedata  # Original DICOM and behavioral data
-│   ├── sub-100
-│   │   ├── behav
-│   │   │   ├── *.csv
-│   │   │   ├── *.log
-│   │   │   ├── *.psydat
-│   │   │   └── ...
-│   │   ├── mri
-│   │   │   ├── 01-localizer_iso_ND
+│   ├── sourcedata  # Original DICOM and behavioral data
+│   │   ├── sub-100
+│   │   │   ├── behav
+│   │   │   │   ├── *.csv
+│   │   │   │   ├── *.log
+│   │   │   │   ├── *.psydat
+│   │   │   │   └── ...
+│   │   │   ├── mri
+│   │   │   │   ├── 01-localizer_iso_ND
 │   │   │   │   ├── *.dcm
 │   │   │   │   └── ...
 │   │   │   ├── ...
@@ -173,22 +172,22 @@ Files are organized according to the BIDS standard:
 Use `dcm2bids` to convert raw mri data:
 
 ```bash
-cd $project_dir/acdc_spine_7T_analysis/code/
+cd $root_dir/spine_7t_fmri_analysis/code/
 
 dcm2bids -d $main_dir/sourcedata/sub-$ID/mri/ \
           -p $ID \
-          -c $project_dir/acdc_spine_7T_analysis/config/config_bids_6Nov25.txt \
-          -o $main_dir/rawdata/
+          -c $root_dir/spine_7t_fmri_analysis/config/config_bids_6Nov25.txt \
+          -o $root_dir/spine_7t_fmri_data/
 ```
 
 - `$ID` is the subject ID (e.g., 103)
-- For full data conversion instructions, see: `/acdc_spine_7T_analysis/code/convert_data/00_convert_mriData.sh`
+- For full data conversion instructions, see: `/acdc_spine_7t_fmri_analysis/code/convert_data/00_convert_mriData.sh`
 
 #### Convert physio data
-Use `/acdc_spine_7T_analysis/code/convert_data/00_convert_physioData.sh` to convert raw physio data into BIDS format.
+Use `/spine_7t_fmri_analysis/code/convert_data/00_convert_physioData.sh` to convert raw physio data into BIDS format.
 
 ```bash
-cd $project_dir/acdc_spine_7T_analysis/code/convert_data/
+cd $root_dir/spine_7t_fmri_analysis/code/convert_data/
 bash 00_convert_physioData.sh
 ``` 
 
@@ -255,7 +254,7 @@ You can for exemple run the script and then manually check and correct specific 
 
   The output files can be found in:
   ```
-  $main_dir/acdc_spine_7T_project/manual/sub-<ID>/func/
+  /spine_7t_fmri_analysis/derivatives/manual/sub-<ID>/func/
       └── <task*_acq*>/
           ├── sub-<ID>_<task_acq>_bold_tmean_centerline.csv
           └── sub-<ID>_<task_acq>_bold_tmean_centerline.nii.gz
@@ -266,7 +265,7 @@ You can for exemple run the script and then manually check and correct specific 
   Check the segmentation results, if needed, manually correct the segmentation in fsleyes using the anatomical image or mean functional image as background.
  When saving the corrected segmentation, make sure to keep the same name as the original segmentation file but save it in the `manual` folder:
   ```
-  $main_dir/acdc_spine_7T_project/manual/sub-<ID>/func
+  /spine_7t_fmri_analysis/derivatives/manual/sub-<ID>/func
       └── <task*_acq*>/
           └── sub-<ID>_<task_acq>_bold_moco_mean_seg.nii.gz
   ``` 
@@ -284,7 +283,7 @@ You can for exemple run the script and then manually check and correct specific 
   ```
   The output files can be found in:
   ```
-  $main_dir/acdc_spine_7T_project/manual/sub-<ID>/anat
+  /spine_7t_fmri_analysis/derivatives/manual/sub-<ID>/anat
       └── sub-<ID>_T2star_space-orig_label-ivd.nii.gz
   ``` 
 </details>

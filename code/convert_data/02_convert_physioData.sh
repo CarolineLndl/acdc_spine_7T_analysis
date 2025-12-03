@@ -1,12 +1,12 @@
-root_dir=/cerebro/cerebro1/dataset/spine_7T/
-derivatives_dir=$root_dir"derivatives/spine_7T_project/"
-cd  $root_dir"/spine_7T_analysis/config/"
+root_dir=/cerebro/cerebro1/dataset/spine_7t/
+
+cd  $root_dir"/spine_7t_fmri_analysis/config/"
 source spine_7T_env.sh
 
 ID=106
 
 #Compress physio files ------------------------------------------------
-cd $root_dir"/sourcedata/sub-"$ID"/pmu/"
+cd $root_dir"/spine_7t_fmri_data/sourcedata/sub-"$ID"/pmu/"
 
 # rename the files
 declare -A associationMRISession=(
@@ -69,10 +69,10 @@ done
 
 
 #Convert physio to BIDS
-cd $root_dir"/spine_7T_analysis/code/convert_data/"
-for archive in "$root_dir/sourcedata/sub-$ID/pmu/"*.tar.gz; do 
+cd $root_dir"/spine_7t_fmri_analysis/code/convert_data/"
+for archive in "$root_dir/spine_7t_fmri_data/sourcedata/sub-$ID/pmu/"*.tar.gz; do 
 #"$root_dir/sourcedata/sub-$ID/pmu/"*.tar.gz; do
     echo "$archive"
-    python physio2bids.py -t "$archive" -s "$ID" -o "$root_dir/rawdata/" -v True
+    python physio2bids.py -t "$archive" -s "$ID" -o "$root_dir/" -v True
 done
 
