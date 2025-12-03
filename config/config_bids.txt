@@ -1,0 +1,138 @@
+
+{
+    "descriptions": [
+      
+
+        {
+      "datatype": "anat",
+      "suffix": "localizer",
+      "criteria": {
+        "SeriesDescription": "*localizer_iso"
+      }
+    },
+
+        {
+      "datatype": "anat",
+      "suffix": "T2star",
+      "criteria": {
+        "SeriesDescription": "*localizer_for_segmentation*"
+      }
+    },
+
+      
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-motor_acq-shimSlice+3mm",
+      "criteria": {
+        "ProtocolName": "*bold_f0xyz_task*"
+      }
+    },
+
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-motor_acq-shimBase+3mm",
+      "criteria": {
+        "ProtocolName": "*bold_baseline_task*"
+      }
+    },
+
+
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-motor_acq-shimSlice+1mm+sms2",
+      "criteria": {
+        "ProtocolName": "*bold_1mm_slice_SMS2_f0xyz_task*"
+      }
+    },
+
+
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-motor_acq-shimBase+1mm+sms2",
+      "criteria": {
+        "ProtocolName": "*bold_1mm_slice_SMS2_baseline_task*"
+      }
+    },
+
+
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-rest_acq-shimSlice+3mm",
+      "criteria": {
+        "ProtocolName": "*bold_f0xyz_tsnr*"
+      }
+    },
+
+         {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-rest_acq-shimBase+3mm",
+      "criteria": {
+        "ProtocolName": "*bold_baseline_tsnr*"
+      }
+    },
+
+
+         {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-rest_acq-shimSlice+1mm+sms2",
+      "criteria": {
+        "ProtocolName": "*1mm_slice_SMS2_f0xyz_tsnr*"
+      }
+    },
+
+
+{
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-rest_acq-shimBase+1mm+sms2",
+      "criteria": {
+        "ProtocolName": "*bold_1mm_slice_SMS2_baseline_tsnr*"
+      }
+    },
+
+{
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-rest_acq-shimBase+3mm",
+      "criteria": {
+        "ProtocolName": "*R2_baseline_30vols*"
+      }
+    },
+
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-rest_acq-shimSlice+3mm",
+      "criteria": {
+        "ProtocolName": "*R2_f0xyz_30vols*"
+      }
+    },
+
+{
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-motor_acq-shimBase+3mm",
+      "criteria": {
+        "ProtocolName": "*R2_baseline_120vols*"
+      }
+    },
+
+        {
+     "datatype": "func",
+      "suffix": "bold",
+"custom_entities":"task-motor_acq-shimSlice+3mm",
+      "criteria": {
+        "ProtocolName": "*R2_f0xyz_120*"
+      }
+    }
+
+        
+    ]
+}
