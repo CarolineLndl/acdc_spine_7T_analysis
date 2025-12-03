@@ -4,6 +4,9 @@ code/convert_data/dcm2niix/
 #ignore log folder
 log/
 
+#ignore toolboxes folder
+toolboxes/
+
 # Python caches
 __pycache__/
 
@@ -24,3 +27,6 @@ code/.nfs*
 
 # Ignore notebooks folder
 notebooks/
+
+#Ignore spine_7T_env.sh
+config/spine_7T_env.sh
