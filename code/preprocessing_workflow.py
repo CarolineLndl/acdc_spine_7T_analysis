@@ -47,12 +47,6 @@ manual_centerline = args.manual_centerline.lower() == "true"
 auto_vert_labels = args.auto_vert_labels.lower() == "true"
 redo = args.redo.lower() == "true"
 
-if isinstance(redo, bool):
-    print("redo is boolean")
-else:
-    print("redo is not boolean")
-
-
 with open(path_code + '/config/config_spine_7t_fmri.json') as config_file: # the notebook should be in 'xx/notebook/' folder #config_proprio
     config = json.load(config_file) # load config file should be open first and the path inside modified
 
@@ -77,7 +71,6 @@ manual_dir=os.path.expandvars(config["manual_dir"])
 #------------------------------------------------------------------
 #------ Preprocessing
 #------------------------------------------------------------------
-print("redo", redo, flush=True)
 print("=== Preprocessing script Start ===", flush=True)
 print("Participant(s) included : ", IDs, flush=True)
 print("===================================", flush=True)
