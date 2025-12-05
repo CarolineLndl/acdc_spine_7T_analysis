@@ -17,14 +17,14 @@ from nilearn import image
 import nibabel as nib
 
 #custom imports
-import brsc_utils
+import utils
 
 
 
 #####################################################
-class Preprocess_BrSc:
+class Preprocess_main:
     '''
-    The Preprocess_BrSc class is used to setup the preprocessing directories and files according to the config file
+    The Preprocess_main class is used to setup the preprocessing directories and files according to the config file
     
     Attributes
     ----------
@@ -36,42 +36,31 @@ class Preprocess_BrSc:
         Whether to print information during the each step (default: True)
     '''
     
-    def __init__(self, config, ana_contrast="T2star",verbose=True):
+    def __init__(self, config, ana_contrast="T2star",IDs=None,verbose=True):
         if verbose:    
-            print("The config files should be manually modified first")
             print("All the raw data should be store in BIDS format")
             print(" ")
+        if IDs==None:
+            raise ValueError("Please provide the participant ID (e.g., _.stc(ID='A001')).")
+
         
         # Class attributes -------------------------------------------------------------------------------------
         self.config = config # load config info
-        self.participant_IDs= self.config["participants_IDs"] # list of the participants to analyze
-        self.root_dir=self.config["root_dir"] # main drectory of the project
-        self.raw_dir=self.root_dir + self.config["raw_dir"] # directory of the raw data
-        self.derivatives_dir=self.root_dir + self.config["derivatives_dir"] # directory of the derivatives data
-        self.manual_dir=self.derivatives_dir + self.config["manual_dir"] # directory of the manual corrections
-        self.qc_dir=self.derivatives_dir + self.config["preprocess_dir"]["QC_dir"] # directory of the QC outputs
+        self.participant_IDs= IDs # list of the participants to analyze
+        self.root_dir=os.path.expandvars(self.config["root_dir"]) # main drectory of the project
+        self.raw_dir=os.path.expandvars(self.config["raw_dir"]) # directory of the raw data
+        self.derivatives_dir=os.path.expandvars(self.config["derivatives_dir"]) # directory of the derivatives data
+        self.manual_dir=os.path.expandvars(self.config["manual_dir"]) # directory of the manual corrections
+        self.qc_dir=os.path.expandvars(self.config["preprocess_dir"]["QC_dir"]) # directory of the QC outputs
        
-        # Check for specificities in filenames ----------------------------------------------------------------
-        for ID in self.participant_IDs:
-            if 'files_specificities' in self.config.keys():
-                if ID in config['files_specificities'][ana_contrast]:
-                    print("sub-" + ID + " have a anat filename specitity: " + config['files_specificities'][ana_contrast][ID]) if verbose==True else None
-                        
-                if ID in config['files_specificities']["func"]:
-                    print("sub-" + ID + " have a func filename specitity: ") if verbose==True else None
-                    print(config['files_specificities']["func"][ID]) if verbose==True else None
-                
-        
         # Create directories -------------------------------------------------------------------------------------
         os.makedirs(self.qc_dir, exist_ok=True)
 
         # Create participant directories (if not already existed)
         for ID in self.participant_IDs:
-            print(ID) if verbose==True else None
             if "preprocess_dir" in self.config.keys():
-                ID_preproc_dir=self.derivatives_dir +self.config["preprocess_dir"]["main_dir"].format(ID) # directory of the preprocess data
-                print(ID_preproc_dir) if verbose==True else None
-
+                ID_preproc_dir=os.path.expandvars(self.config["preprocess_dir"]["main_dir"].format(ID)) # directory of the preprocess data
+               
                 if not os.path.exists(ID_preproc_dir):
                     os.makedirs(ID_preproc_dir)
                     # create 1 folder per session if there are multiple sessions (exemple multiple days of acquisition)
@@ -121,12 +110,10 @@ class Preprocess_BrSc:
 
 
             # copy raw anatomical file to preprocess folder anat directory ------------------------------------------------------------------
-            if ID in config['files_specificities'][ana_contrast]:
-                raw_anat=self.raw_dir + "/sub-" + ID + "/anat/" + self.config["preprocess_f"]["anat_raw"].format(ID, config['files_specificities'][ana_contrast][ID] +"_")
-    
-            else:
-                raw_anat=self.raw_dir + "/sub-" + ID + "/anat/" + self.config["preprocess_f"]["anat_raw"].format(ID,"")
-            if not os.path.exists(ID_preproc_dir + "/anat/" + self.config["preprocess_f"]["anat_raw"].format(ID,"")):
+            print(self.raw_dir + "/sub-" + ID + "/anat/" + self.config["preprocess_f"]["anat_raw"].format(ID,"*"))
+            raw_anat=glob.glob(self.raw_dir + "/sub-" + ID + "/anat/" + self.config["preprocess_f"]["anat_raw"].format(ID,"*"))[0]
+            
+            if not os.path.exists(ID_preproc_dir + "/anat/" + os.path.basename(raw_anat)):
                 shutil.copy(raw_anat,ID_preproc_dir + "/anat/")
          
     
@@ -143,15 +130,20 @@ class Preprocess_Sc:
         Defining all the parameters of the analysis including the path and the participants to analyze
     
     '''
-    def __init__(self, config):
-        self.config = config # load config info
-        self.participant_IDs= self.config["participants_IDs"] # list of the participants to analyze
-        self.root_dir=self.config["root_dir"] # main drectory of the project
-        self.raw_dir=self.root_dir + self.config["raw_dir"] # directory of the raw data
-        self.derivatives_dir=self.root_dir + self.config["derivatives_dir"] # directory of the derivatives data
-        self.manual_dir=self.derivatives_dir + self.config["manual_dir"] # directory of the manual corrections
-        self.qc_dir=self.derivatives_dir + self.config["preprocess_dir"]["QC_dir"] # directory of the QC outputs
+    def __init__(self, config, IDs=None):
+
+        if IDs==None:
+            raise ValueError("Please provide the participant ID (e.g., _.stc(ID='A001')).")
         
+        self.config = config # load config info
+        self.participant_IDs= IDs # list of the participants to analyze
+        self.root_dir=os.path.expandvars(config["root_dir"]) # main drectory of the project
+        self.raw_dir=os.path.expandvars(self.config["raw_dir"]) # directory of the raw data
+        self.derivatives_dir=os.path.expandvars(self.config["derivatives_dir"]) # directory of the derivatives data
+        self.manual_dir=os.path.expandvars(self.config["manual_dir"]) # directory of the manual corrections
+        self.qc_dir=os.path.expandvars(self.config["preprocess_dir"]["QC_dir"]) # directory of the QC outputs
+        self.code_dir=os.path.expandvars(config["code_dir"])
+        self.preprocessing_dir=os.path.expandvars(self.config["preprocess_dir"]["main_dir"])
         # Check the structure type ----------------------------------------------------------------
         if len(self.config["structures"])>1:
             self.structure="spinalcord/" # structure subfolder if two structures are specified
@@ -208,7 +200,7 @@ class Preprocess_Sc:
             raise ValueError("Please provide the filename of the input image.")
 
         # --- Define directories -----------------------------------------------------------
-        preprocess_dir = self.derivatives_dir + self.config["preprocess_dir"]["main_dir"].format(ID)
+        preprocess_dir = self.preprocessing_dir.format(ID)
        
         # --- Define method and output folder ----------------------------------------------
         if manual==True:
@@ -271,7 +263,7 @@ class Preprocess_Sc:
         # --- Generate QC plot -------------------------------------------------------------
         if verbose:
             qc_indiv_path=f"{self.qc_dir}/sub-{ID}/func/{ses_name}/{task_name}/sct_get_centerline/"
-            qc_indiv_dir=brsc_utils.get_latest_dir(base_dir=qc_indiv_path)
+            qc_indiv_dir=utils.get_latest_dir(base_dir=qc_indiv_path)
             self._plot_qc(ID=ID, ses_name=ses_name, task_name=task_name, tag="centerline", qc_indiv_path=qc_indiv_path, fig_size=(15,15),alpha=0.8)
 
             if not os.path.exists(manual_file):
@@ -347,7 +339,7 @@ class Preprocess_Sc:
 
 
         # --- Define main folders ----------------------------------------------------------
-        preprocess_dir=self.derivatives_dir +self.config["preprocess_dir"]["main_dir"].format(ID)
+        preprocess_dir =self.preprocessing_dir.format(ID)
         if o_folder is None : # gave the default folder name if not provided
             o_folder=preprocess_dir + "/" + ses_name + self.config["preprocess_dir"]["func_moco"].format(task_name)
 
@@ -414,7 +406,7 @@ class Preprocess_Sc:
                 np.savetxt(o_folder +self.structure+ 'FD_mean.txt', [meandiff]) # save the mean framewise displacement
                 
             qc_indiv_path = f"{self.qc_dir}/sub-{ID}/func/{ses_name}/{task_name}/sct_fmri_moco/sct_fmri_moco/"
-            qc_indiv_dir=brsc_utils.get_latest_dir(base_dir=qc_indiv_path)
+            qc_indiv_dir=utils.get_latest_dir(base_dir=qc_indiv_path)
 
         return moco_file, moco_mean_file, qc_indiv_dir if verbose==True else None
 
@@ -477,7 +469,7 @@ class Preprocess_Sc:
 
 
         # --- Define folders and filenames ----------------------------------------------------------------
-        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = self.preprocessing_dir.format(ID)
 
         if o_folder is None : # gave the default folder name if not provided
             if img_type=="func":
@@ -642,7 +634,7 @@ class Preprocess_Sc:
         
 
         # --- Define output folder and filenames ----------------------------------------------------------
-        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = self.preprocessing_dir.format(ID)
 
         if o_folder is None : # gave the default folder name if not provided
             if auto:
@@ -749,7 +741,7 @@ class Preprocess_Sc:
             param = "step=1,type=seg,algo=centermassrot:step=2,type=im,algo=syn,iter=5,slicewise=1,metric=CC,smooth=0"
 
         # --- Define output folder and filenames ----------------------------------------------------------
-        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = self.preprocessing_dir.format(ID)
 
         if o_folder is None:
             o_folder = os.path.join(preprocess_dir, f"{self.config['preprocess_dir'][tag + '_coreg']}")
@@ -857,9 +849,9 @@ class Preprocess_Sc:
         
         # --- Default template files -----------------------------------------------------------------------
         if PAM50_cord is None:
-            PAM50_cord = os.path.join(self.root_dir + self.config["tools_dir"]["main_codes"], "template", self.config["PAM50_cord"])
+            PAM50_cord = os.path.join(self.code_dir, "template", self.config["PAM50_cord"])
         if PAM50_t2 is None:
-            PAM50_t2 = os.path.join(self.root_dir + self.config["tools_dir"]["main_codes"], "template", self.config["PAM50_t2"])
+            PAM50_t2 = os.path.join(self.code_dir, "template", self.config["PAM50_t2"])
 
         # --- Tags for run/task ---------------------------------------------------------------------------
         run_tag = f"_{run_name}" if run_name else ""
@@ -880,7 +872,7 @@ class Preprocess_Sc:
                 param='step=1,type=seg,algo=centermass,metric=MeanSquares:step=2,algo=bsplinesyn,type=seg,slicewise=1,iter=5'
                     
         # --- Define output folder -------------------------------------------------------------------------
-        preprocess_dir = os.path.join(self.derivatives_dir, self.config["preprocess_dir"]["main_dir"].format(ID))
+        preprocess_dir = self.preprocessing_dir.format(ID)
 
         if img_type=="func":
             if o_folder is None : # gave the default folder name if not provided
@@ -964,7 +956,7 @@ class Preprocess_Sc:
         if dest_img==None:
             dest_img=[]
             for ID_nb in enumerate(i_imgs):
-                dest_img.append(self.root_dir + self.config["tools_dir"]["main_codes"] + "/template/"+ self.config["PAM50_t2"])
+                dest_img.append(self.code_dir + "/template/"+ self.config["PAM50_t2"])
                 
         else:
             dest_img=[dest_img] if isinstance(dest_img,str) else dest_img
@@ -988,7 +980,7 @@ class Preprocess_Sc:
         # --- Apply transformation --------------------------------------------------------------------------
         if not all(os.path.exists(f) for f in o_imgs) or redo:
             print(" ")
-            print(">>>>> Apply transformation is running with " + str(n_jobs)+ " parallel jobs on " +str(len(self.config["participants_IDs"])) + " participant(s)")
+            print(">>>>> Apply transformation is running with " + str(n_jobs)+ " parallel jobs on " +str(len(self.participant_IDs)) + " participant(s)")
         
             Parallel(n_jobs=n_jobs)(delayed(self._run_apply_warp)(i_img=i_imgs[ID_nb],
                                                                         dest_img=dest_img[ID_nb],
@@ -1036,7 +1028,7 @@ class Preprocess_Sc:
 
 
     def _plot_qc(self,ID, ses_name, task_name, tag, qc_indiv_path, fig_size=(5,5),alpha=0.8):
-        qc_indiv_dir=brsc_utils.get_latest_dir(base_dir=qc_indiv_path) 
+        qc_indiv_dir=utils.get_latest_dir(base_dir=qc_indiv_path) 
         img_bck=qc_indiv_dir + "/background_img.png"
         img_cntr=qc_indiv_dir + "/overlay_img.png"
         
