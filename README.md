@@ -17,7 +17,7 @@ export PATH_PROJECT=<PATH_TO_PROJECT>
 
 ### Download data 📀
 
-See: https://openneuro.org/datasets/ds007067/download
+See: https://openneuro.org/datasets/ds007067/download v4.0.0
 
 <details>
 <summary>Files are organized according to the BIDS standard.</summary>
@@ -215,10 +215,6 @@ bash "${PATH_CODE}/code/run_all_processing.sh" --path-data "${PATH_DATA}" --path
   ```
 </details>
 
-
-##### ‼️ What we want to try to improve
-> - **IV. Registration to template:** check if the parameters for the registration are ok.
-
 ### 2.2 Denoising  🧹
 
 Should be run after preprocessing.
@@ -246,8 +242,12 @@ bash "${PATH_CODE}/code/run_all_processing.sh" --path-data "${PATH_DATA}" --path
 Should be run after preprocessing and denoising.
 
 #### Description of the first-level analysis
-- **I. Run first level GLM:** to estimate the activation maps for each condition of interest (e.g., motor task vs rest) using the events files and the denoised functional data. The design matrix includes the conditions of interest.
-- **II. Normalize the resulting stat maps to PAM50 template space:** to allow for group-level analyses, we normalized the resulting stat maps to the PAM50 template space using the warps generated during the preprocessing step.
+- **I. Compute SNR:** Calculate signal noise ration and temporal signal noise ratio for each indivdiuals
+- **II. Plot EPI comparison:** Plot EPIs from different participants (ShimBase vs ShimSlice) for comparisons
+- **III. Plot segmentation:** Plot segmentation mask from different participants (ShimBase vs ShimSlice) for comparisons
+- **IV. Run first level GLM:** to estimate the activation maps for each condition of interest (e.g., motor task vs rest) using the events files and the denoised functional data. The design matrix includes the conditions of interest.
+- **V. Normalize the resulting stat maps to PAM50 template space:** to allow for group-level analyses, we normalized the resulting stat maps to the PAM50 template space using the warps generated during the preprocessing step.
+- **VI. Plot first level results** 
 
 #### Run first-level analysis
 - If you already have setup `PATH_CODE` and `PATH_DATA`, you don't need to specify `--path-data` and `--path-code`.
@@ -257,5 +257,28 @@ Should be run after preprocessing and denoising.
 ```bash
 # ids(090 101 106)
 bash "${PATH_CODE}/code/run_all_processing.sh" --path-data "${PATH_DATA}" --path-code "${PATH_CODE}" --ids "${IDs[@]}" --tasks motor --firstlevel
+
+```
+
+### 2.4 Second-level Analysis 📊
+Should be run after first-level.
+
+#### Description of the first-level analysis
+- **I. Compute tSNR average :** to estimate the tSNR maps at the group level.
+- **II. Vertebrae signal analysis**
+- **III. Compute average FD** to estimate the framewise displacement across individuals and shimming conditions
+- **IV. Run second level GLM:** to estimate the activation maps at the group level.
+- **V. Plot group level tSNR and GLM**
+- **VI. Compute ICC:** to estimate test-retest reproductibility
+
+
+#### Run second-level analysis
+- If you already have setup `PATH_CODE` and `PATH_DATA`, you don't need to specify `--path-data` and `--path-code`.
+- Specify individuals to process (`--ids 090 101 106`) or `IDs=(090 101 106)` and (`--ids "${IDs[@]}"`) , the default option run preprocessing on all participants in the `participants.tsv`. Specify task to analyse (`--tasks` `motor`), the default option run denoising on all tasks defined in the `config_file_7t_fmri.json` but for this protocol you shoul specify motor task only.
+- You add `--secondlevel` to run first level analysis.
+
+```bash
+# ids(090 101 106)
+bash "${PATH_CODE}/code/run_all_processing.sh" --path-data "${PATH_DATA}" --path-code "${PATH_CODE}" --ids "${IDs[@]}" --tasks motor --secondlevel
 
 ```
