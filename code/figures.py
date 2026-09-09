@@ -41,7 +41,7 @@ class Figures_main:
         os.makedirs(self.first_level_fig,exist_ok=True)
         os.makedirs(self.second_level_fig,exist_ok=True)
      
-    def plot_first_level_maps(self, i_fnames=None, output_fname=None,titles=["shimBase","shimSlice"],cmap="autumn",stat_min=1.6, stat_max=4,background_fname=None,mask_fname=None, underlay_fname=None,task_name=None,plot_mip=True, participant_ids=None, verbose=True, redo=False,n_cols=5):
+    def plot_first_level_maps(self, i_fnames=None, output_fname=None,titles=["shimBase","shimSlice"],cmap="autumn",dpi=2000,stat_min=1.6, stat_max=4,background_fname=None,mask_fname=None, underlay_fname=None,task_name=None,plot_mip=True, participant_ids=None, verbose=True, redo=False,n_cols=5):
         """
         Plot first-level statistical maps for multiple participants and contrasts in a grid layout.
 
@@ -239,7 +239,7 @@ class Figures_main:
                     
 
             # --- Save figure ---
-            fig.savefig(output_fname, dpi=300)
+            fig.savefig(output_fname, dpi=dpi)
             plt.close(fig)
         
         else:
@@ -248,7 +248,7 @@ class Figures_main:
         return output_fname
     
     def plot_fmri_maps(self, i_fnames=None, output_fname=None, stat_min=2.3, stat_max=5,titles = ["shimBase", "shimSlice"],
-                  background_fname=None, cbar_label='t-value', cmap="autumn", z_slices=None,
+                  background_fname=None, cbar_label='t-value', cmap="autumn", z_slices=None,dpi=2000,
                   mask_fname=None, underlay_fname=None, task_name=None, verbose=True, redo=False,
                        arrows=None, ovals=None):
 
@@ -369,14 +369,14 @@ class Figures_main:
                 n_maps=n_maps
             )
 
-            plt.savefig(output_fname, transparent=True, dpi=300)
+            plt.savefig(output_fname, transparent=True, dpi=dpi)
             plt.close(fig)
 
         return output_fname
     
     def plot_fmri_maps_axial(self, i_fnames=None, output_fname=None, stat_min=2.3, stat_max=5,
                           titles=["shimBase", "shimSlice"], background_fname=None, cbar_label='t-value', cmap="autumn",
-                          z_slices=None, n_slices=6, mask_fname=None, underlay_fname=None,
+                          z_slices=None, n_slices=6, mask_fname=None, underlay_fname=None,dpi=2000,
                           task_name=None, verbose=True, redo=False):
 
         if output_fname is None:
@@ -470,7 +470,7 @@ class Figures_main:
                         ax.set_title(titles[col], color="black", fontweight='bold',
                                     fontsize=9, fontname="Arial")
 
-            plt.savefig(output_fname, transparent=True, dpi=300)
+            plt.savefig(output_fname, transparent=True, dpi=dpi)
             plt.close(fig)
 
         return output_fname
