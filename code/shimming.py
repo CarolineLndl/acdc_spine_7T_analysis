@@ -346,7 +346,7 @@ def main():
         plt.tight_layout()
         fig.tight_layout()
         fname_fmap_comparison = os.path.join(path_shimming, f"sub-{ID}", f"sub-{ID}_fmap_comparison.png")
-        fig.savefig(fname_fmap_comparison, dpi=600)
+        fig.savefig(fname_fmap_comparison, dpi=2000)
         if ID == "099":
             shutil.copy(fname_fmap_comparison, os.path.join(path_figures, f"fmap_comparison.png"))
 
@@ -410,10 +410,10 @@ def main():
                                   x_data="Experiment", x_order=plot_exp,
                                   indiv_values=False, x_labels=plot_labels,
                                   y_data=metric, redo=True, aspect=1 , height=3.7,
-                                   add_labels=("acquired", "simulated", "simulated", "simulated")))
+                                   add_labels=("acquired", "simulated", "simulated", "simulated"), transparent=False))
 
     figs.combine_plots(os.path.join(path_figures, "shim_boxplots.png"), plots,
-                       figsize=(5, 3), redo=True)
+                       figsize=(5, 3), redo=True, transparent=False)
 
     #################################################################
     # Show SLSQP with and without sig loss
@@ -471,12 +471,12 @@ def main():
                       x_data="Experiment", x_order=plot_exp_sigint,
                       indiv_values=False, x_labels=plot_labels_sigint,
                       y_data=metric, redo=True, aspect=1, height=3.7,
-                      add_labels=("acquired", "simulated", "simulated"))
+                      add_labels=("acquired", "simulated", "simulated"), transparent=False)
         if metric in ["std", "rmse"]:
             plots.append(aplot)
 
     figs.combine_plots(os.path.join(path_figures, "shim_boxplots_sigint.png"), plots,
-                       figsize=(5, 3), redo=True)
+                       figsize=(5, 3), redo=True, transparent=False)
 
 
     # #################################################################

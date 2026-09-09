@@ -717,7 +717,7 @@ class Figures_main:
         
         return output_fname
 
-    def boxplots(self, csv_file=None,df=None,output_fname=None, stats_file=None,x_data=None, x_order=None, y_data=None, hue=None, hue_order=None,specify_y_label=None,output_dir=None, color=None, indiv_values=False,indiv_hue=None, indiv_color=None, plot_legend=True, output_tag='', ymin=6, ymax=17,height=2.5,aspect=0.6, invers_axes=False,indiv=False, group=False, show_pvalues_if_sig=True,plot_xlabels=True, redo=False, x_labels=None, stats_height_scaling=0.97, legend_ha="right", add_labels=None):
+    def boxplots(self, csv_file=None,df=None,output_fname=None, stats_file=None,x_data=None, x_order=None, y_data=None, hue=None, hue_order=None,specify_y_label=None,output_dir=None, color=None, indiv_values=False,indiv_hue=None, indiv_color=None, plot_legend=True, output_tag='', ymin=6, ymax=17,height=2.5,aspect=0.6, invers_axes=False,indiv=False, group=False, show_pvalues_if_sig=True,plot_xlabels=True, redo=False, x_labels=None, stats_height_scaling=0.97, legend_ha="right", add_labels=None, dpi=2000, transparent=True):
         """
         Create matrix of correlation boxplots with matching box outline and whisker colors.
         """
@@ -945,7 +945,7 @@ class Figures_main:
             
             # Save the figure if requested
             plt.tight_layout(pad=0.1)
-            plt.savefig(output_fname, dpi=600, transparent=True)
+            plt.savefig(output_fname, dpi=dpi, transparent=transparent)
             plt.close()
         
         return output_fname
@@ -956,7 +956,7 @@ class Figures_main:
                   map_titles=None, axial_titles=None, graph_titles=None,
                   label_idx=True,
                   figsize=(3.5, 3.5), graph_width_scale=1.0, graph_height_scale=1.0,
-                  graph_col_scale=0.6, axial_col_scale=1.1, redo=False):
+                  graph_col_scale=0.6, axial_col_scale=1.1, redo=False, dpi=2000, transparent=True):
 
         n_maps = len(map_files)
         n_graphs = len(graph_files) if graph_files else 0
@@ -1090,6 +1090,5 @@ class Figures_main:
 
             fig.subplots_adjust(wspace=0.05, hspace=0.05,
                                 left=0.01, right=0.99, top=0.93, bottom=0.01)
-            plt.savefig(output_fname, dpi=600, transparent=True, bbox_inches='tight')
+            plt.savefig(output_fname, dpi=dpi, transparent=transparent, bbox_inches='tight')
             plt.close()
-

@@ -1491,7 +1491,7 @@ class SegmentationComparison:
                         arrowprops=dict(arrowstyle="->", color="blue", lw=0.8),
                     )
 
-        fig.savefig(os.path.join(self.path_main_fig, "fig_seg_comparison.png"), dpi=600)
+        fig.savefig(os.path.join(self.path_main_fig, "fig_seg_comparison.png"), dpi=2000)
 
 
 def template_slice_to_spinal_level(template_slice):
