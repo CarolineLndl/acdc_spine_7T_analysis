@@ -1,4 +1,4 @@
-# Project: Spinal cord fMRI analysis at 7T
+# Project: Spinal cord fMRI analysis at 7T (v1.0.0)
 
 ## Overview
 Processing of spinal cord functional data acquired at 7T.
